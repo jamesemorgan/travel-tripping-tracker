@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="travelMapperApp">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- External Libs -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+    <!-- Angular Libs -->
+    <script src="libs/angular.js" type="text/javascript" ></script>
+
+    <!-- Application Files -->
+    <script src="app/app.js" type="text/javascript" ></script>
+
+    <script src="app/controllers.js" type="text/javascript" ></script>
+
+    <script src="app/services/googleMapService.js" type="text/javascript" ></script>
+    <script src="app/services/browserGeoService.js" type="text/javascript" ></script>
+
+</head>
+
+
+<body>
+
+	<div class="container">
+		
+		<div class="row">
+
+            <div class="span4" ng-controller="LookupController">
+
+                <label for="lookupLocationTxt">Enter Location to Lookup:</label>
+                <input id="lookupLocationTxt" type="text" ng-model="searchTerm"/>
+                <button class="btn" ng-click="lookupMarker()" ng-disabled="!canLookup()">Lookup</button>
+
+                Results Found: <span ng-bind="lookupResults.length"></span>
+
+                <select ng-model="selectedLookupResult" ng-options="location.formatted_address for location in lookupResults">></select>
+                <button class="btn" ng-click="addMarker()" ng-disabled="selectedLookupResult == null">Add</button>
+
+                <hr />
+
+                Find me (Requires Modern browser) <input ng-click="onGeoLookup()" type="button" value="Lookup" />
+                <br />
+                <span ng-bind-template="{{ geoLookupFailed.code }} {{ geoLookupFailed.reason }}"></span>
+
+                <hr />
+
+                Current Markers: {{ currentMarkers.length }}<br />
+
+                <div ng-repeat="marker in currentMarkers">
+                    [{{$index + 1}}] | {{ marker.title }} <a href="#" ng-click="removeMarker($index)">X</a>
+                </div>
+
+            </div>
+
+            <div class="span8" ng-controller="MapController" ng-init="initMap()">
+
+                <div id="map-canvas" style="width: 800px;height: 500px"></div>
+
+            </div>
+
+		</div>
+
+	</div>
+
+
+</body>
+</html>
