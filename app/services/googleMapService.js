@@ -112,10 +112,6 @@ app.service('GoogleMapService', function GoogleMapService($rootScope, $log, $htt
         }
     }
 
-    self.plotLocations = function(latLngMarkers){
-        // TODO
-    }
-
     function alreadyAddedMarker(marker){
         for (var i=0; i < self.currentMarkers.length; i++) {
             $log.warn("current pos = " + self.currentMarkers[i].position + " | new marker = " + marker.geometry.location)

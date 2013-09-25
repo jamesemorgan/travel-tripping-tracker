@@ -36,7 +36,7 @@ app.controller('LookupController',
         }
 
         $scope.canLookup = function (){
-            return $scope.searchTerm.length >= 4 && $scope.searchTerm != defaultSearch;
+            return $scope.searchTerm.length >= 3 && $scope.searchTerm != defaultSearch;
         }
 
         $scope.lookupMarker = function(){
@@ -52,6 +52,7 @@ app.controller('LookupController',
         }
 
         function geoCode(success, failure){
+            $log.info("GeoCode lookup " + $scope.searchTerm)
             GoogleMapService.geoCode($scope.searchTerm, success, failure);
         }
 
@@ -70,11 +71,15 @@ app.controller('LookupController',
         $scope.drawOurRoute = function() {
             $scope.clear();
 
-            var ourRoute = ['manchester','beijing','datong','xian','shanghai','hong kong','hanoi'];
+            // TODO this does not work -> QUERY_LIMIT_EXCEED -> needs to based on promises and start next one on completion with delay
 
-            for (var i=0; i < ourRoute.length; i++) {
+            var ourRoute = ['manchester','beijing','datong','xian','shanghai','hong kong','hanoi','halong bay','hue','hoi an','nha trang','dalat','mui ne','saigon'];
+
+            for (var i=0; i <= ourRoute.length; i++) {
+
                 $scope.searchTerm = ourRoute[i];
                 $scope.lookupMarker();
+
                 geoCode(
                     function(results){
                         $scope.$apply(function(){
@@ -88,9 +93,6 @@ app.controller('LookupController',
                         $log.error("Failed, code = ["+error.code+"] reason = ["+error.reason+"]");
                     });
             }
-            GoogleMapService.plotLocations([
-                // Manchester, China, Vietnam, Cambodia, Laos, Thailand, Malaysia, Singapore, Indonesia
-            ]);
             GoogleMapService.drawCurrentMarkers();
         }
 
