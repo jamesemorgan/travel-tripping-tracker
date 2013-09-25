@@ -47,7 +47,11 @@
 
                 <hr />
 
-                Current Markers: {{ currentMarkers.length }}<br />
+                <button class="btn" ng-click="clear()" ng-disabled="currentMarkers.length < 1">Clear</button>
+                | <button class="btn" ng-click="drawOurRoute()">Our Route</button>
+                | <button class="btn" ng-click="drawRoute()" ng-disabled="currentMarkers.length < 3">Draw Route</button><br />
+
+                Total: {{ currentMarkers.length }}
 
                 <div ng-repeat="marker in currentMarkers">
                     [{{$index + 1}}] | {{ marker.title }} <a href="#" ng-click="removeMarker($index)">X</a>

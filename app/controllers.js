@@ -6,12 +6,19 @@ app.controller('LookupController',
 
         $scope.searchTerm = angular.copy(defaultSearch);
         $scope.lookupResults = [];
-        $scope.selectedLookupResult = null;
+        $scope.selectedLookupResult = [];
 
         // Geo Look Up vars
         $scope.geoLookupFailed = {};
 
         $scope.currentMarkers = []
+
+        // use a watch to observe changes to as I don't like putting service direct on page
+        $scope.$watch(function() {
+            return GoogleMapService.currentMarkers;
+        }, function (markers) {
+            $scope.currentMarkers = markers;
+        });
 
         $scope.onGeoLookup = function(){
             $scope.geoLookupFailed = {}; // reset
@@ -33,7 +40,7 @@ app.controller('LookupController',
         }
 
         $scope.lookupMarker = function(){
-            $scope.lookupResults = [];
+            $scope.lookupResults = []; // reset
             GoogleMapService.geoCode($scope.searchTerm,
                 function(results){
                     $scope.$apply(function(){
@@ -52,13 +59,27 @@ app.controller('LookupController',
             GoogleMapService.removeMarker(index);
         }
 
-        // use a watch to observe changes to as I don't like putting service direct on page
-        $scope.$watch(function() {
-            return GoogleMapService.currentMarkers;
-        }, function (markers) {
-            $scope.currentMarkers = markers;
-        });
+        $scope.drawRoute = function(){
+            GoogleMapService.drawCurrentMarkers();
+        }
 
+        $scope.drawOurRoute = function() {
+            $scope.clear();
+            GoogleMapService.plotLocations([
+                // Manchester, China, Vietnam, Cambodia, Laos, Thailand, Malaysia, Singapore, Indonesia
+            ]);
+            GoogleMapService.drawCurrentMarkers();
+        }
+
+        $scope.clear = function(){
+            $scope.searchTerm = angular.copy(defaultSearch);
+            $scope.lookupResults = [];
+            $scope.selectedLookupResult = null;
+            $scope.geoLookupFailed = {};
+            $scope.currentMarkers = []
+
+            GoogleMapService.clear();
+        }
     }
 );
 
