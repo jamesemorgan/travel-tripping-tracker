@@ -70,10 +70,8 @@ app.controller('LookupController',
 
         $scope.drawOurRoute = function() {
             $scope.clear();
-
             // TODO this does not work -> QUERY_LIMIT_EXCEED -> needs to based on promises and start next one on completion with delay
-
-            var ourRoute = ['manchester','beijing','datong','xian','shanghai','hong kong','hanoi','halong bay','hue','hoi an','nha trang','dalat','mui ne','saigon'];
+            var ourRoute = ['manchester','beijing','datong','xian','shanghai','hong kong','hanoi','halong bay','hue','hoi an','nha trang','da lat','mui ne','saigon'];
 
             for (var i=0; i <= ourRoute.length; i++) {
 
