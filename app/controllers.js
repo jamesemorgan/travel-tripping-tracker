@@ -41,7 +41,7 @@ app.controller('LookupController',
 
         $scope.lookupMarker = function(){
             $scope.lookupResults = []; // reset
-            GoogleMapService.geoCode($scope.searchTerm,
+            geoCode(
                 function(results){
                     $scope.$apply(function(){
                         $scope.lookupResults = results;
@@ -49,6 +49,10 @@ app.controller('LookupController',
                 },function(error){
                     $log.error("Failed, code = ["+error.code+"] reason = ["+error.reason+"]");
                 });
+        }
+
+        function geoCode(success, failure){
+            GoogleMapService.geoCode($scope.searchTerm, success, failure);
         }
 
         $scope.addMarker = function(){
@@ -65,6 +69,25 @@ app.controller('LookupController',
 
         $scope.drawOurRoute = function() {
             $scope.clear();
+
+            var ourRoute = ['manchester','beijing','datong','xian','shanghai','hong kong','hanoi'];
+
+            for (var i=0; i < ourRoute.length; i++) {
+                $scope.searchTerm = ourRoute[i];
+                $scope.lookupMarker();
+                geoCode(
+                    function(results){
+                        $scope.$apply(function(){
+                            $scope.lookupResults = results;
+                            $scope.selectedLookupResult = $scope.lookupResults[0]
+                            GoogleMapService.addMarkerWithInfoWindow($scope.selectedLookupResult, true);
+                            $scope.addMarker();
+                            GoogleMapService.drawCurrentMarkers();
+                        });
+                    },function(error){
+                        $log.error("Failed, code = ["+error.code+"] reason = ["+error.reason+"]");
+                    });
+            }
             GoogleMapService.plotLocations([
                 // Manchester, China, Vietnam, Cambodia, Laos, Thailand, Malaysia, Singapore, Indonesia
             ]);
@@ -74,7 +97,7 @@ app.controller('LookupController',
         $scope.clear = function(){
             $scope.searchTerm = angular.copy(defaultSearch);
             $scope.lookupResults = [];
-            $scope.selectedLookupResult = null;
+            $scope.selectedLookupResult = [];
             $scope.geoLookupFailed = {};
             $scope.currentMarkers = []
 

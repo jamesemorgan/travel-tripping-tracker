@@ -11,13 +11,14 @@ Its very basic at the moment and hopefully if I have time will look good eventua
 
 ## TODO
 
+# Change GeoCode look ups to use promises to remove callbacks!
 # Change colour of lines for every country
 # Add ability to quickly lookup our route!
 ~ Add input masks to input fields
 # Add tooltips where necessary
 # Add icons to lines
 # Ability to animate route
-# Add details of route
+
 # Add tooltips/mouse overs -> http://www.geocodezip.com/v3_SO_directionsWithTooltip.html
 # Many markers -> http://www.geocodezip.com/v3_polyline_example_kmmarkers_0.html
 # Investigate usage of OpenStreetMap http://www.openstreetmap.org

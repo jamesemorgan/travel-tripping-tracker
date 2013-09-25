@@ -98,12 +98,18 @@ app.service('GoogleMapService', function GoogleMapService($rootScope, $log, $htt
     }
 
     self.clear = function(){
-        for (var i=0; i < self.currentMarkers.length; i++) {
-            self.currentMarkers[i].setMap(null)
+
+        if(self.currentMarkers != null){
+            for (var i=0; i < self.currentMarkers.length; i++) {
+                self.currentMarkers[i].setMap(null)
+            }
+            self.currentMarkers = []
         }
-        self.currentMarkers = []
-        self.currentTravelPath.setMap(null);
-        self.currentTravelPath = null;
+
+        if(self.currentTravelPath != null && self.currentTravelPath.hasOwnProperty('setMap')){
+            self.currentTravelPath.setMap(null);
+            self.currentTravelPath = null;
+        }
     }
 
     self.plotLocations = function(latLngMarkers){
